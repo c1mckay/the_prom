@@ -3,7 +3,7 @@
   tasks:
   - name: download test file
     get_url:
-      url: "www.google.com"
+      url: "https://google.com/index.html"
       dest: ~/
 
 - hosts: slaves
