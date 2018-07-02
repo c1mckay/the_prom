@@ -1,9 +1,11 @@
 ---
-- hosts: master  
+- hosts: master
+  vars:
+    prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.3.1/prometheus-2.3.1.linux-amd64.tar.gz
   tasks:
-  - name: download test file
+  - name: download prometheus
     get_url:
-      url: "https://google.com/"
+      url: "{{ prometheus_url }}"
       dest: ~/
 
 - hosts: slaves
