@@ -21,7 +21,7 @@
     ignore_errors: yes
 
   - name: start prometheus
-    shell: "nohup ~/prometheus-2.3.1.linux-amd64/prometheus </dev/null >/dev/null 2>&1 &"
+    shell: "nohup ~/prometheus-2.3.1.linux-amd64/prometheus --config.file=prometheus.config </dev/null >/dev/null 2>&1 &"
 
 - hosts: slaves
   vars:
