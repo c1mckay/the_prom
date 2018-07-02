@@ -61,9 +61,11 @@
     yum:
       name: epel-release
       state: latest
+    become: yes
 
   - name: install pip
     yum:
       name: python-pip
       state: latest
+    become: yes
 
