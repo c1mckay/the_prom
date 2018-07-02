@@ -8,6 +8,14 @@
       url: "{{ prometheus_url }}"
       dest: ~/
 
+  - name: extract prometheus archive
+    unarchive: src=~/prometheus-2.3.1.linux-amd64.tar.gz
+               dest=~/
+               copy=no
+
+  - name: copy prometheus file
+    shell: "cp ~/the_prom/prometheus.config ~/"
+
 - hosts: slaves
   vars:
     node_url: https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-amd64.tar.gz
@@ -24,8 +32,8 @@
       dest: ~/
 
   - name: extract node archive
-    unarchive: src=/home/centos/node_exporter-0.16.0.linux-amd64.tar.gz
-               dest=/home/centos/
+    unarchive: src=~/node_exporter-0.16.0.linux-amd64.tar.gz
+               dest=~/
                copy=no
 
   - name: start node exporter
