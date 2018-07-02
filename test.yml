@@ -34,6 +34,7 @@
     node_url: https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-amd64.tar.gz
     node_tar: ~/node_exporter-0.16.0.linux-amd64.tar.gz
     node_directory: node_exporter-0.16.0.linux-amd64
+    skip_all: true
   tasks:
   - name: kill previous node exporter process
     shell: "pkill node_exporter"
