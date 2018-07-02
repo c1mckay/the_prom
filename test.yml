@@ -14,7 +14,7 @@
                copy=no
 
   - name: copy prometheus file
-    shell: "cp ~/the_prom/prometheus.config ~/"
+    shell: "cp ~/the_prom/prometheus.config ~/prometheus-2.3.1.linux-amd64/"
 
 - hosts: slaves
   vars:
