@@ -21,3 +21,4 @@
 
   - name: start node exporter
     shell: "nohup /home/centos/{{ node_directory }}/node_exporter </dev/null >/dev/null 2>&1 &"
+
