@@ -62,10 +62,17 @@
       name: epel-release
       state: latest
     become: yes
+    when: not skip_all
 
   - name: install pip
     yum:
       name: python-pip
       state: latest
     become: yes
+    when: not skip_all
+
+  - name: install prometheus_client for python
+    pip:
+      name: prometheus_client
+      
 
