@@ -1,0 +1,23 @@
+---
+- hosts: slave
+  vars:
+    node_url: https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-amd64.tar.gz
+    node_tar: ~/node_exporter-0.16.0.linux-amd64.tar.gz
+    node_directory: node_exporter-0.16.0.linux-amd64
+  tasks:
+  - name: kill previous node exporter process
+    shell: "pkill node_exporter"
+    ignore_errors: yes
+
+  - name: download node exporter
+    get_url:
+      url: "{{ node_url }}"
+      dest: ~/
+
+  - name: extract node archive
+    unarchive: src=/home/centos/node_exporter-0.16.0.linux-amd64.tar.gz
+               dest=/home/centos/
+               copy=no
+
+  - name: start node exporter
+    shell: "nohup /home/centos/{{ node_directory }}/node_exporter </dev/null >/dev/null 2>&1 &"
