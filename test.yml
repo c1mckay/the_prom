@@ -75,5 +75,12 @@
     pip:
       name: prometheus_client
     become: yes
-      
+    when: not skip_all
+
+  - name: copy example python example server script
+    copy:
+      src: ~/the_prom/server_example.py
+      dest: ~/
+      mode: 0400
+
 
