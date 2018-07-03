@@ -23,7 +23,7 @@
 
   - name: copy prometheus file
     shell: "cp ~/the_prom/prometheus.config ~/prometheus-2.3.1.linux-amd64/"
-    when: not skip_all
+    # when: not skip_all
 
   - name: start prometheus
     shell: "cd ~/prometheus-2.3.1.linux-amd64; nohup ./prometheus --config.file=prometheus.config </dev/null >/dev/null 2>&1 &"
