@@ -77,10 +77,16 @@
     become: yes
     when: not skip_all
 
+  - name: kill previous node exporter process
+    shell: "pkill python"
+    ignore_errors: yes
+
   - name: copy example python example server script
     copy:
       src: ~/the_prom/server_example.py
       dest: ~/
       mode: 0400
+
+  # - name: start python script
 
 
