@@ -2,7 +2,7 @@
 - hosts: master
   vars:
     prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.3.1/prometheus-2.3.1.linux-amd64.tar.gz
-    skip_all: true
+    skip_all: false
   tasks:
   - name: kill previous prometheus
     shell: "pkill -2 prometheus"
@@ -87,6 +87,5 @@
       dest: ~/
       mode: 0400
 
-  # - name: start python script
-
-
+  - name: start node exporter
+    shell: "nohup python ~/server_example.py </dev/null >/dev/null 2>&1 &"
