@@ -74,5 +74,6 @@
   - name: install prometheus_client for python
     pip:
       name: prometheus_client
+    become: yes
       
 
