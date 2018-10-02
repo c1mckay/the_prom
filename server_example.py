@@ -2,7 +2,7 @@ import time
 import random
 import string
 
-from prometheus_client import start_http_server, Summary
+from prometheus_client import start_http_server, Info, Summary
 
 # Create a metric to track time spent and requests made.
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
@@ -22,7 +22,7 @@ def random_string():
 if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8000)
-    Summary('my_summary', 'unused').observe(random_string())
+    Info('my_summary', 'Description of info').info({'value': random_string()})
 
     # Generate some requests.
     while True:
