@@ -1,25 +1,16 @@
-import time
-import random
-
-from prometheus_client import start_http_server, Summary, Gauge
-
-# Create a metric to track time spent and requests made.
-REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+from prometheus_client import start_http_server, Gauge
 
 
-# Decorate function with metric.
-@REQUEST_TIME.time()
-def process_request(t):
-    """A dummy function that takes some time."""
-    time.sleep(t)
+def is_healthy():
+    return int(open('/sys/fs/lustre/health_check').read().strip() == 'healthy')
 
 
 if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8000)
     g = Gauge('my_random_number', '')
-    g.set_function(lambda: random.random() * 5)
+    g.set_function(is_healthy)
 
     # Generate some requests.
     while True:
-        process_request(random.random())
+        continue
