@@ -1,3 +1,5 @@
+ssh -p 222 c1mckay@testdrive.aeoncomputing.com
+
 sudo yum install -y ansible nano git
 
 edit /etc/hosts
