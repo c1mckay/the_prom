@@ -1,0 +1,3 @@
+[style]
+# YAPF uses the chromium style
+column_limit = 100
