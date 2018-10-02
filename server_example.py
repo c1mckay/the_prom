@@ -2,7 +2,10 @@ from prometheus_client import start_http_server, Gauge
 
 
 def is_healthy():
-    return int(open('/sys/fs/lustre/health_check').read().strip() == 'healthy')
+    f = open('/sys/fs/lustre/health_check')
+    contents = f.read().strip()
+    f.close()
+    return int(contents == 'healthy')
 
 
 if __name__ == '__main__':
