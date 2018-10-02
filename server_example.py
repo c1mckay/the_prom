@@ -17,7 +17,8 @@ def process_request(t):
 if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8000)
-    Summary('my_summary', 'unused').observe(random.random() * 5)
+    g = Gauge('my_random_number', '')
+    g.set_function(lambda: random.random() * 5)
 
     # Generate some requests.
     while True:
