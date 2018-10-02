@@ -36,27 +36,6 @@
     node_directory: node_exporter-0.16.0.linux-amd64
     skip_all: false
   tasks:
-  - name: kill previous node exporter process
-    shell: "pkill node_exporter"
-    ignore_errors: yes
-    when: not skip_all
-
-  - name: download node exporter
-    get_url:
-      url: "{{ node_url }}"
-      dest: ~/
-    when: not skip_all
-
-  - name: extract node archive
-    unarchive: src=~/node_exporter-0.16.0.linux-amd64.tar.gz
-               dest=~/
-               copy=no
-    when: not skip_all
-
-  - name: start node exporter
-    shell: "nohup ~/{{ node_directory }}/node_exporter </dev/null >/dev/null 2>&1 &"
-    when: not skip_all
-
   - name: install pip dependency
     yum:
       name: epel-release
@@ -77,7 +56,7 @@
     become: yes
     when: not skip_all
 
-  - name: kill previous node exporter process
+  - name: kill previous python exporter process
     shell: "pkill python"
     ignore_errors: yes
 
@@ -87,5 +66,5 @@
       dest: ~/
       mode: 0400
 
-  - name: start node exporter
+  - name: start python exporter
     shell: "nohup python ~/server_example.py </dev/null >/dev/null 2>&1 &"
