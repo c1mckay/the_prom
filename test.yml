@@ -41,6 +41,10 @@
     ignore_errors: yes
     when: not skip_all
 
+  - name: kill pyprom_exporter process
+    shell: "pkill -9 python"
+    ignore_errors: yes
+
   - name: download node proc_exporter
     get_url:
       url: "{{ node_url }}"
@@ -76,10 +80,6 @@
       name: prometheus_client
     become: yes
     when: not skip_all
-
-  - name: kill previous python exporter process
-    shell: "pkill -9 python"
-    ignore_errors: yes
 
   - name: pull python exporter from git
     git:
