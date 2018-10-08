@@ -2,20 +2,19 @@ import glob
 import subprocess
 
 from prometheus_client import start_http_server, Gauge
+import util
 
 LLSTAT = '/usr/bin/llstat'
 MD_STATS_URL = '/proc/fs/lustre/mdt/montest1-MDT0000/md_stats'
 
 
 def llstat(file_location):
-    output = subprocess.check_output([LLSTAT, file_location])
-    lines = output.split('\n')[1:]
-    return {line.split()[0]: line.split()[1] for line in lines if line}
-
-
-def remove_last(s, old):
-    li = s.rsplit(old, 1)
-    return ''.join(li)
+    try:
+        output = subprocess.check_output([LLSTAT, file_location])
+        lines = output.split('\n')[1:]
+        return {line.split()[0]: line.split()[1] for line in lines if line}
+    except subprocess.CalledProcessError:
+        return {}
 
 
 def resolve_path(url):
@@ -24,21 +23,9 @@ def resolve_path(url):
     for resolved_path in resolved_paths:
         split = url.split('*')
         tag = resolved_path.replace(split[0], '', 1)
-        tag = remove_last(tag, split[1]).replace('-', '_')
+        tag = util.remove_last(tag, split[1]).replace('-', '_')
         ret[tag] = resolved_path
     return ret
-
-
-def read_line(url):
-    f = open(url)
-    contents = f.read().strip()
-    f.close()
-    return contents
-
-
-def is_healthy():
-    contents = read_line('/sys/fs/lustre/health_check')
-    return int(contents == 'healthy')
 
 
 def get_md_stat_func(url, key, numify):
@@ -57,13 +44,17 @@ def add_md_stats():
 
 
 def add_health_check():
+    def is_healthy():
+        contents = util.read_line('/sys/fs/lustre/health_check')
+        return int(contents == 'healthy')
+
     g = Gauge('health_check', '')
     g.set_function(is_healthy)
 
 
 def read_int_stat_func(url):
     def read_int_stat():
-        return int(read_line(url))
+        return int(util.read_line(url))
 
     return read_int_stat
 
@@ -82,7 +73,7 @@ LNET_TYPES = [
 
 def read_lnet_stat_func(url, index):
     def read_lnet_stat():
-        return read_line(url).split()[index]
+        return util.read_line(url).split()[index]
 
     return read_lnet_stat
 
