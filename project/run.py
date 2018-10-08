@@ -93,6 +93,20 @@ def add_lnet_stats():
         g.set_function(read_lnet_stat_func('/proc/sys/lnet/stats', LNET_TYPES.index(lnet_type)))
 
 
+ODB_FILTER_TYPES = [
+    'read_bytes', 'write_bytes', 'destroy', 'create', 'statfs', 'connect', 'reconnect', 'statfs',
+    'preprw', 'commitrw', 'ping'
+]
+ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
+
+
+def add_obdfilter_stats():
+    for odb_filter_type in ODB_FILTER_TYPES:
+        for tag, full_path in resolve_path(ODB_URL).items():
+            g = Gauge('odb_filter_' + odb_filter_type + '_' + tag, '')
+            g.set_function(read_lnet_stat_func(full_path, ODB_FILTER_TYPES.index(odb_filter_type)))
+
+
 if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8000)
@@ -103,6 +117,7 @@ if __name__ == '__main__':
     add_int_stat('/proc/fs/lustre/osd-zfs/*/filesfree', 'files_free')
 
     add_lnet_stats()
+    add_obdfilter_stats()
 
     # Generate some requests.
     while True:
