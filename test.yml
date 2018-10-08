@@ -76,7 +76,7 @@
     when: not skip_all
 
   - name: install prometheus_client for python
-    pip: requirements=/root/py_prom_exporter/projectrequirements.txt
+    pip: requirements=/root/py_prom_exporter/project/requirements.txt
     become: yes
     when: not skip_all
 
