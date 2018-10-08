@@ -41,10 +41,10 @@ def is_healthy():
     return int(contents == 'healthy')
 
 
-def get_md_stat_func(key):
+def get_md_stat_func(url, key, numify):
     def get_md_stat():
-        val = llstat(MD_STATS_URL)[key]
-        return float(val)
+        val = llstat(url)[key]
+        return numify(val)
 
     return get_md_stat
 
@@ -53,7 +53,7 @@ def add_md_stats():
     llstat_result = llstat(MD_STATS_URL)
     for key in llstat_result.keys():
         g = Gauge('md_stats_' + key, '')
-        g.set_function(get_md_stat_func(key))
+        g.set_function(get_md_stat_func(MD_STATS_URL, key, float))
 
 
 def add_health_check():
@@ -93,18 +93,15 @@ def add_lnet_stats():
         g.set_function(read_lnet_stat_func('/proc/sys/lnet/stats', LNET_TYPES.index(lnet_type)))
 
 
-ODB_FILTER_TYPES = [
-    'read_bytes', 'write_bytes', 'destroy', 'create', 'statfs', 'connect', 'reconnect', 'statfs',
-    'preprw', 'commitrw', 'ping'
-]
 ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
 
 
 def add_obdfilter_stats():
-    for odb_filter_type in ODB_FILTER_TYPES:
-        for tag, full_path in resolve_path(ODB_URL).items():
-            g = Gauge('odb_filter_' + odb_filter_type + '_' + tag, '')
-            g.set_function(read_lnet_stat_func(full_path, ODB_FILTER_TYPES.index(odb_filter_type)))
+    for tag, full_path in resolve_path(ODB_URL).items():
+        llstat_result = llstat(ODB_URL)
+        for key in llstat_result.keys():
+            g = Gauge('odb_filter_' + key + '_' + tag, '')
+            g.set_function(get_md_stat_func(full_path, key, int))
 
 
 if __name__ == '__main__':
