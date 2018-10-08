@@ -78,7 +78,7 @@
     when: not skip_all
 
   - name: kill previous python exporter process
-    shell: "pkill python"
+    shell: "pkill -9 python"
     ignore_errors: yes
 
   - name: pull python exporter from git
