@@ -89,7 +89,7 @@ ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
 
 def add_obdfilter_stats():
     for tag, full_path in resolve_path(ODB_URL).items():
-        llstat_result = llstat(ODB_URL)
+        llstat_result = llstat(full_path)
         for key in llstat_result.keys():
             g = Gauge('odb_filter_' + key + '_' + tag, '')
             g.set_function(get_md_stat_func(full_path, key, int))
