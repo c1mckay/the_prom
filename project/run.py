@@ -78,7 +78,7 @@ if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8000)
     add_health_check()
-    # add_md_stats()
+    add_md_stats()
     # add_int_stat('/proc/fs/lustre/osd-zfs/*/kbytesfree', 'kbytes_free')
     # add_int_stat('/proc/fs/lustre/osd-zfs/*/filesfree', 'files_free')
 

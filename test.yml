@@ -82,10 +82,11 @@
       update: yes
       version: master
 
-  - name: install prometheus_client for python
+  - name: install py_prom_exporter pip requirements
     pip: requirements=/root/py_prom_exporter/project/requirements.txt
     become: yes
     when: not skip_all
+    ignore_errors: yes
 
-  - name: start python exporter
+  - name: start py_prom_exporter
     shell: "nohup python /root/py_prom_exporter/project/run.py </dev/null >/dev/null 2>&1 &"
