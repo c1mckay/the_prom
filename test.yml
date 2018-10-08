@@ -75,17 +75,17 @@
     become: yes
     when: not skip_all
 
-  - name: install prometheus_client for python
-    pip: requirements=/root/py_prom_exporter/project/requirements.txt
-    become: yes
-    when: not skip_all
-
   - name: pull python exporter from git
     git:
       repo: https://github.com/c1mckay/the_prom.git
       dest: /root/py_prom_exporter
       update: yes
       version: master
+
+  - name: install prometheus_client for python
+    pip: requirements=/root/py_prom_exporter/project/requirements.txt
+    become: yes
+    when: not skip_all
 
   - name: start python exporter
     shell: "nohup python /root/py_prom_exporter/project/run.py </dev/null >/dev/null 2>&1 &"
