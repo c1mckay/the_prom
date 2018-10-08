@@ -28,10 +28,10 @@ def resolve_path(url):
     return ret
 
 
-def get_md_stat_func(url, key, numify):
+def get_md_stat_func(url, key):
     def get_md_stat():
         val = llstat(url)[key]
-        return numify(val)
+        return float(val)
 
     return get_md_stat
 
@@ -40,7 +40,7 @@ def add_md_stats():
     llstat_result = llstat(MD_STATS_URL)
     for key in llstat_result.keys():
         g = Gauge('md_stats_' + key, '')
-        g.set_function(get_md_stat_func(MD_STATS_URL, key, float))
+        g.set_function(get_md_stat_func(MD_STATS_URL, key))
 
 
 def add_health_check():
@@ -95,7 +95,7 @@ def add_obdfilter_stats():
             res = get_md_stat_func(full_path, key, int)()
             print('result: ' + str(res))
             g = Gauge('odb_filter_' + key + '_' + tag, '')
-            g.set_function(get_md_stat_func(full_path, key, int))
+            g.set_function(get_md_stat_func(full_path, key))
 
 
 if __name__ == '__main__':
