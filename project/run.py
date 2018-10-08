@@ -92,7 +92,7 @@ def add_obdfilter_stats():
         llstat_result = llstat(full_path)
         for key in llstat_result.keys():
             print('adding' + 'odb_filter_' + key + '_' + tag)
-            res = get_md_stat_func(full_path, key, int)()
+            res = get_md_stat_func(full_path, key)()
             print('result: ' + str(res))
             g = Gauge('odb_filter_' + key + '_' + tag, '')
             g.set_function(get_md_stat_func(full_path, key))
