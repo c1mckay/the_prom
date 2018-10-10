@@ -52,6 +52,8 @@ def add_health_check():
     g.set_function(is_healthy)
     g = Gauge('health_check', 'WHERE_IS_TEXT')
     g.set_function(is_healthy)
+    g = Gauge('health_checky', 'WHERE_IS_TEXT')
+    g.set_function(is_healthy)
 
 
 def read_int_stat_func(url):
