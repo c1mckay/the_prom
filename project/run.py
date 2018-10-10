@@ -50,7 +50,8 @@ def add_health_check():
 
     # g = Gauge('health_check', '', [("src", )])
     # g.labels({'src': 'chucky'})
-    g = Gauge('health_check', '')
+    g = Gauge('health_check', '', ('method', 'endpoint', 'whitelabel'))
+    g.labels('GET', '/trade/', 'ugh')
     g.set_function(is_healthy)
 
 
