@@ -49,7 +49,7 @@ def add_health_check():
         return int(contents == 'healthy')
 
     g = Gauge('health_check', '', ['src'])
-    g.labels(src='chucky')
+    g.labels({'src': 'chucky'})
     g.set_function(is_healthy)
 
 
