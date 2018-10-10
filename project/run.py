@@ -48,7 +48,7 @@ def add_health_check():
         contents = util.read_line('/sys/fs/lustre/health_check')
         return int(contents == 'healthy')
 
-    g = Gauge('health_check', '')
+    g = Gauge('health_check', 'WHERE_IS_TEXT')
     g.set_function(is_healthy)
 
 
