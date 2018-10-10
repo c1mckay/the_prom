@@ -51,8 +51,7 @@ def add_health_check():
     # g = Gauge('health_check', '', [("src", )])
     # g.labels({'src': 'chucky'})
     g = Gauge('health_check', '', ('method', 'endpoint', 'whitelabel'))
-    g.labels('GET', '/trade/', 'ugh')
-    g.set_function(is_healthy)
+    g.labels('GET', '/trade/', 'ugh').set_function(is_healthy)
 
 
 def read_int_stat_func(url):
