@@ -1,11 +1,16 @@
 import glob
 import subprocess
 
-from prometheus_client import start_http_server, Gauge
+from prometheus_client import start_http_server
+
+from project import gauge_service
 import util
 
+HEALTH_CHECK_URL = '/sys/fs/lustre/health_check'
 LLSTAT = '/usr/bin/llstat'
 MD_STATS_URL = '/proc/fs/lustre/mdt/montest1-MDT0000/md_stats'
+LNET_STAT_URL = '/proc/sys/lnet/stats'
+ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
 
 
 def llstat(file_location):
@@ -39,19 +44,15 @@ def get_md_stat_func(url, key):
 def add_md_stats():
     llstat_result = llstat(MD_STATS_URL)
     for key in llstat_result.keys():
-        g = Gauge('md_stats_' + key, '')
-        g.set_function(get_md_stat_func(MD_STATS_URL, key))
+        gauge_service.add_gauge('md_stats_' + key, get_md_stat_func(MD_STATS_URL, key))
 
 
 def add_health_check():
     def is_healthy():
-        contents = util.read_line('/sys/fs/lustre/health_check')
+        contents = util.read_line(HEALTH_CHECK_URL)
         return int(contents == 'healthy')
 
-    # g = Gauge('health_check', '', [("src", )])
-    # g.labels({'src': 'chucky'})
-    g = Gauge('health_check', '', ('method', 'endpoint', 'whitelabel'))
-    g.labels('GET', '/trade/', 'ugh').set_function(is_healthy)
+    gauge_service.add_gauge('health_checky', is_healthy)
 
 
 def read_int_stat_func(url):
@@ -63,8 +64,7 @@ def read_int_stat_func(url):
 
 def add_int_stat(url, type_tag):
     for tag, full_path in resolve_path(url).items():
-        g = Gauge(type_tag + '_' + tag, '')
-        g.set_function(read_int_stat_func(full_path))
+        gauge_service.add_gauge(type_tag + '_' + tag, read_int_stat_func(full_path))
 
 
 LNET_TYPES = [
@@ -82,25 +82,19 @@ def read_lnet_stat_func(url, index):
 
 def add_lnet_stats():
     for lnet_type in LNET_TYPES:
-        g = Gauge('lnet_stat_' + lnet_type, '')
-        g.set_function(read_lnet_stat_func('/proc/sys/lnet/stats', LNET_TYPES.index(lnet_type)))
-
-
-ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
+        lnet_index = LNET_TYPES.index(lnet_type)
+        gauge_service.add_gauge('lnet_stat_' + lnet_type,
+                                read_lnet_stat_func(LNET_STAT_URL, lnet_index))
 
 
 def add_obdfilter_stats():
     for tag, full_path in resolve_path(ODB_URL).items():
         llstat_result = llstat(full_path)
         for key in llstat_result.keys():
-            print('adding' + 'odb_filter_' + key + '_' + tag)
-            res = get_md_stat_func(full_path, key)()
-            print('result: ' + str(res))
-            g = Gauge('odb_filter_' + key + '_' + tag, '')
-            g.set_function(get_md_stat_func(full_path, key))
+            gauge_service.add_gauge('odb_filter_' + key, get_md_stat_func(full_path, key), src=tag)
 
 
-if __name__ == '__main__':
+def run():
     # Start up the server to expose the metrics.
     start_http_server(8000)
     add_health_check()

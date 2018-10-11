@@ -1,3 +1,7 @@
 
 node_list.txt
 hosts.txt
+
+.pytest_cache/*
+app/project/__pycache__/*
+app/tests/__pycache__/*
