@@ -1,6 +1,6 @@
 import sys
 
-sys.path.insert(0, "/root/py_prom_exporter/app/project")
+sys.path.insert(0, "~/the_prom/py_prom_exporter/app/project/")
 
 if __name__ == '__main__':
     from project import app
