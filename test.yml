@@ -83,7 +83,7 @@
       version: master
 
   - name: install py_prom_exporter pip requirements
-    pip: requirements=/root/py_prom_exporter/project/requirements.txt
+    pip: requirements=/root/py_prom_exporter/app/requirements.txt
     become: yes
     when: not skip_all
     ignore_errors: yes
