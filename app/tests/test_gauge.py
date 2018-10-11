@@ -9,7 +9,7 @@ def test_gauge_exists():
     gauge_service.add_gauge(gauge_name, get_func())
 
     test.gauge_exists(gauge_name)
-    test.gauge_not_exists(gauge_name + '2')
+    test.gauge_not_exists(gauge_name + '3')
 
 
 def test_src_label():
