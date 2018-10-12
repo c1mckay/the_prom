@@ -52,7 +52,7 @@ def add_health_check():
         contents = util.read_line(HEALTH_CHECK_URL)
         return int(contents == 'healthy')
 
-    gauge_service.add_gauge('health_check', is_healthy, src='my_documents')
+    gauge_service.add_gauge('health_check', is_healthy, src='my_documents', another='yess')
 
 
 def read_int_stat_func(url):
