@@ -35,8 +35,11 @@ def resolve_path(url):
 
 def get_md_stat_func(url, key):
     def get_md_stat():
-        val = llstat(url)[key]
-        return float(val)
+        try:
+            val = llstat(url)[key]
+            return float(val)
+        except:  # NOQA
+            return 0
 
     return get_md_stat
 
