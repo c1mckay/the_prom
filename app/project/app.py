@@ -10,7 +10,7 @@ HEALTH_CHECK_URL = '/sys/fs/lustre/health_check'
 LLSTAT = '/usr/bin/llstat'
 MD_STATS_URL = '/proc/fs/lustre/mdt/montest1-MDT0000/md_stats'
 LNET_STAT_URL = '/proc/sys/lnet/stats'
-ODB_URL = '/proc/fs/lustre/obdfilter/*/stats'
+OBD_URL = '/proc/fs/lustre/obdfilter/*/stats'
 
 
 def llstat(file_location):
@@ -88,10 +88,12 @@ def add_lnet_stats():
 
 
 def add_obdfilter_stats():
-    for tag, full_path in resolve_path(ODB_URL).items():
+    print(resolve_path(OBD_URL))
+    for tag, full_path in resolve_path(OBD_URL).items():
         llstat_result = llstat(full_path)
+        print(llstat_result)
         for key in llstat_result.keys():
-            gauge_service.add_gauge('odb_filter_' + key, get_md_stat_func(full_path, key), src=tag)
+            gauge_service.add_gauge('obd_filter_' + key, get_md_stat_func(full_path, key), src=tag)
 
 
 def run():
