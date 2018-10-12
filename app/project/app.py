@@ -55,7 +55,7 @@ def add_health_check():
         contents = util.read_line(HEALTH_CHECK_URL)
         return int(contents == 'healthy')
 
-    gauge_service.add_gauge('health_check', is_healthy, src='my_documents', another='yess')
+    gauge_service.add_gauge('health_check', is_healthy)
 
 
 def read_int_stat_func(url):
@@ -94,8 +94,8 @@ def add_obdfilter_stats():
     for tag, full_path in resolve_path(OBD_URL).items():
         llstat_result = llstat(full_path)
         for key in llstat_result.keys():
-            gauge_service.add_gauge(
-                'obd_filter_' + key, get_md_stat_func(full_path, key), fsname=tag)
+            gauge_service.add_gauge('obd_filter_' + key + '_' + tag, get_md_stat_func(
+                full_path, key))
 
 
 def run():
