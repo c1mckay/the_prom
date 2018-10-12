@@ -19,7 +19,7 @@ def test_src_label():
     def gauge_func():
         return gauge_val
 
-    gauge_service.add_gauge(gauge_name, gauge_func)
+    gauge_service.add_gauge(gauge_name, gauge_func, src='my_documents')
     gauge_func()
 
     test.gauge_exists(gauge_name)
