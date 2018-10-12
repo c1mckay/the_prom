@@ -89,4 +89,4 @@
     ignore_errors: yes
 
   - name: start py_prom_exporter
-    shell: "nohup python /root/py_prom_exporter/project/run.py </dev/null >/dev/null 2>&1 &"
+    shell: "nohup python /root/py_prom_exporter/app/run.py </dev/null >/dev/null 2>&1 &"
