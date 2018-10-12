@@ -88,12 +88,11 @@ def add_lnet_stats():
 
 
 def add_obdfilter_stats():
-    print(resolve_path(OBD_URL))
     for tag, full_path in resolve_path(OBD_URL).items():
         llstat_result = llstat(full_path)
-        print(llstat_result)
         for key in llstat_result.keys():
-            gauge_service.add_gauge('obd_filter_' + key, get_md_stat_func(full_path, key), src=tag)
+            gauge_service.add_gauge(
+                'obd_filter_' + key, get_md_stat_func(full_path, key), fsname=tag)
 
 
 def run():
